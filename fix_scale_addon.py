@@ -1,6 +1,13 @@
 bl_info = {
     "name": "Fix Non-Uniform Scale",
+    "author" : "Andrii Kryvytskyi (GitHub:andrew-krv)",
+    "version": (0, 1),
     "blender": (3, 3, 9),
+    "description": "Addon that fixes non-uniform 1 scale to uniform 1",
+    "warning" : "Usage may alter vertices location for negative scale and brake normals",
+    "tracker_url" : "https://github.com/andrew-krv/blender_scale_uniformer/issues",
+    "support" : "COMMUNITY",
+    "location": "3DView -> Tool Shelf -> Non-Uniform Scale Fix",
     "category": "Object",
 }
 
