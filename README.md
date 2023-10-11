@@ -9,7 +9,7 @@ When modeling for MSFS 2020 there is a restriction - only positive scale is allo
 ## Important notes
 
 - Addon is tested on Bldner v3.3.x LTS (current supported with msfs addon)
-- This transformation WILL break mesh normals, so you'll need to fix them manually
+- This transformation may break mesh normals, so you'll need to fix by using "Flip Normals" button or manually
 - I developed this addon for myself, so if you want to expand/collaborate feel free to fork or open pull request
 
 ---
@@ -40,15 +40,10 @@ I strongly recomend installing addon from release tab as it will not have any de
 
 ## Usage
 
-### Addon
-
 In 3D view click Tool on the right side (press N if not visible). Addon adds two buttons and checkbox. They all located in Non-Uniform Scale Fix section.
 1. (Button) Select Non-Uniform Scale - selects all objects in scene with non uniform 1 scale
+2. (Button) Flip Nornals (Selected) - flips normals for selected objects - in case addon did not guess correct normals while fixing scale
 2. (Button) Fix Non-Uniform Scale - Fixes scale in scene or for selected object
 3. (Checkbox) Selected only - will fix only selected objects.
 
 ---
-
-### Script
-
-Optional script if you want to iterate fast thru the main logic - simply open fix_scale_script.py in Scripting view in Blender order to modify or run script. This script always fixes every object in scene.

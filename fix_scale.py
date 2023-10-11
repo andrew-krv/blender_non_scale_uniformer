@@ -1,12 +1,32 @@
 import bpy
+from math import isclose
 
-# Ensure we are in Object Mode
-bpy.ops.object.mode_set(mode='OBJECT')
+EPSILON = 1e-3
+
+def select_invalid_scale():
+    for obj in bpy.data.objects:
+        obj.select_set(False)
+        if not all(isclose(s, 1.0, abs_tol=EPSILON) for s in obj.scale):
+            if obj.name in [o.name for o in bpy.context.view_layer.objects]:
+                obj.select_set(True)
+        else:
+            print(f"Object {obj.name} is not in the current view layer.")
+
+def flip_normals(obj):
+    if obj.name in [o.name for o in bpy.context.view_layer.objects]:
+        bpy.context.view_layer.objects.active = obj
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.flip_normals()
+        bpy.ops.object.mode_set(mode='OBJECT')
+    else:
+        print(f"Object {obj.name} is not in the current view layer.")
+
 
 # Recursive function to correct scale
 def correct_scale(obj):
     # If the object's scale is (1, 1, 1), no correction is needed
-    if obj.scale == (1.0, 1.0, 1.0):
+    if all(isclose(s, 1.0, abs_tol=EPSILON) for s in obj.scale):
         return
 
     correction_factor = (1 / obj.scale[0], 1 / obj.scale[1], 1 / obj.scale[2])
@@ -17,6 +37,9 @@ def correct_scale(obj):
             vertex.co.x /= correction_factor[0]
             vertex.co.y /= correction_factor[1]
             vertex.co.z /= correction_factor[2]
+
+        if obj.scale.x < 0 or obj.scale.y < 0 or obj.scale.z < 0:
+            flip_normals(obj)
 
     # Reset the object's scale to (1, 1, 1)
     obj.scale = (1.0, 1.0, 1.0)
@@ -41,10 +64,3 @@ def correct_scale(obj):
 
         # Recursively apply corrections to children
         correct_scale(child)
-
-# Iterate over all objects in the Blender file
-for obj in bpy.data.objects:
-    correct_scale(obj)
-
-# Ensure we end in Object Mode
-bpy.ops.object.mode_set(mode='OBJECT')
